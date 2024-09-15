@@ -30,51 +30,62 @@ def clean_and_validate_data(row):
     
     return id, name, age, city
 
-def sync_data():
-    # Step 1: Read data from both sources
-    sheet_data = read_sheet_data(SPREADSHEET_ID, RANGE_NAME)
-    mysql_query = "SELECT id, name, age, city FROM your_table"
-    mysql_data = read_mysql_data(mysql_query)
+def watch_google_sheets():
+    last_known_state = {}
+    while True:
+        current_state = {row[0]: clean_and_validate_data(row) for row in read_sheet_data(SPREADSHEET_ID, RANGE_NAME)[1:] if len(row) >= 4}
+        
+        # Check for changes
+        for id, row in current_state.items():
+            if id not in last_known_state or last_known_state[id] != row:
+                # Update or insert in MySQL
+                query = "INSERT INTO your_table (id, name, age, city) VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE name=%s, age=%s, city=%s"
+                write_mysql_data(query, (*row, row[1], row[2], row[3]))
+                print(f"Updated/Inserted row with id {id} in MySQL")
+        
+        # Check for deletions
+        for id in last_known_state.keys() - current_state.keys():
+            delete_mysql_data("DELETE FROM your_table WHERE id=%s" ,(id,))
+            print(f"Deleted row with id {id} from MySQL")
+        
+        last_known_state = current_state
+        time.sleep(5)  # Check every 5 seconds
 
-    # Step 2: Compare and update both sources
-    sheet_dict = {row[0]: clean_and_validate_data(row) for row in sheet_data[1:] if len(row) >= 4}  # Skip header row
-    mysql_dict = {str(row[0]): row[1:] for row in mysql_data}
-
-    # Update MySQL with new or changed data from Google Sheets
-    for sheet_id, sheet_row in sheet_dict.items():
-        if sheet_id not in mysql_dict:
-            query = "INSERT INTO your_table (id, name, age, city) VALUES (%s, %s, %s, %s)"
-            write_mysql_data(query, sheet_row)
-            print(f"Inserted new row with id {sheet_id} in MySQL")
-        elif mysql_dict[sheet_id] != sheet_row[1:]:
-            query = "UPDATE your_table SET name=%s, age=%s, city=%s WHERE id=%s"
-            update_mysql_data(query, (*sheet_row[1:], sheet_id))
-            print(f"Updated row with id {sheet_id} in MySQL")
-
-    # Delete rows from MySQL that are not in Google Sheets
-    for mysql_id in mysql_dict.keys():
-        if mysql_id not in sheet_dict:
-            query = "DELETE FROM your_table WHERE id=%s"
-            delete_mysql_data(query % mysql_id)
-            print(f"Deleted row with id {mysql_id} from MySQL")
-
-    # Update Google Sheets with data from MySQL
-    updated_mysql_data = read_mysql_data(mysql_query)
-    
-    # Clear existing data in Google Sheets
-    delete_sheet_data(SPREADSHEET_ID, RANGE_NAME)
-    
-    # Write headers
-    headers = [['id', 'name', 'age', 'city']]
-    write_sheet_data(SPREADSHEET_ID, f'{RANGE_NAME.split("!")[0]}!A1:D1', headers)
-    
-    # Append updated data
-    append_sheet_data(SPREADSHEET_ID, RANGE_NAME, updated_mysql_data)
-    print("Updated Google Sheets with latest MySQL data")
-
-    print("Sync completed successfully!")
+def watch_mysql():
+    last_known_state = {}
+    while True:
+        mysql_query = "SELECT id, name, age, city FROM your_table"
+        current_state = {str(row[0]): clean_and_validate_data(row) for row in read_mysql_data(mysql_query)}
+        
+        # Check for changes or additions
+        changes = []
+        for id, row in current_state.items():
+            if id not in last_known_state or last_known_state[id] != row:
+                changes.append(list(row))
+        
+        if changes:
+            # Clear existing data in Google Sheets
+            delete_sheet_data(SPREADSHEET_ID, RANGE_NAME)
+            
+            # Write headers
+            headers = [['id', 'name', 'age', 'city']]
+            write_sheet_data(SPREADSHEET_ID, f'{RANGE_NAME.split("!")[0]}!A1:D1', headers)
+            
+            # Append all data (including changes)
+            all_data = [list(row) for row in current_state.values()]
+            append_sheet_data(SPREADSHEET_ID, RANGE_NAME, all_data)
+            print(f"Updated Google Sheets with latest MySQL data")
+        
+        last_known_state = current_state
+        time.sleep(5)  # Check every 5 seconds
 
 if __name__ == '__main__':
-    sync_data()
+    print("Starting real-time synchronization...")
+    Thread(target=watch_google_sheets).start()
+    Thread(target=watch_mysql).start()
+    
+    # Keep the main thread alive
+    while True:
+        time.sleep(1)
 
 
