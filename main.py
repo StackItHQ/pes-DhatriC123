@@ -1,7 +1,3 @@
-
-
-
-
 from sheets.google_sheets_service import read_sheet_data, write_sheet_data, append_sheet_data, delete_sheet_data
 from database.mysql_connector import read_mysql_data, write_mysql_data, update_mysql_data, delete_mysql_data
 import time
@@ -39,16 +35,22 @@ def watch_google_sheets():
         for id, row in current_state.items():
             if id not in last_known_state or last_known_state[id] != row:
                 # Update or insert in MySQL
-                query = "INSERT INTO your_table (id, name, age, city) VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE name=%s, age=%s, city=%s"
+                query = """
+                    INSERT INTO your_table (id, name, age, city)
+                    VALUES (%s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE name=%s, age=%s, city=%s
+                """
                 write_mysql_data(query, (*row, row[1], row[2], row[3]))
                 print(f"Updated/Inserted row with id {id} in MySQL")
         
         # Check for deletions
-        for id in last_known_state.keys() - current_state.keys():
-            delete_mysql_data("DELETE FROM your_table WHERE id=%s" ,(id,))
+        for id in set(last_known_state) - set(current_state):
+            delete_mysql_data("DELETE FROM your_table WHERE id=%s", (id,))
             print(f"Deleted row with id {id} from MySQL")
         
-        last_known_state = current_state
+        # Update the last known state *after* processing
+        last_known_state = current_state.copy()
+
         time.sleep(5)  # Check every 5 seconds
 
 def watch_mysql():
@@ -76,7 +78,9 @@ def watch_mysql():
             append_sheet_data(SPREADSHEET_ID, RANGE_NAME, all_data)
             print(f"Updated Google Sheets with latest MySQL data")
         
-        last_known_state = current_state
+        # Update the last known state *after* processing
+        last_known_state = current_state.copy()
+
         time.sleep(5)  # Check every 5 seconds
 
 if __name__ == '__main__':
@@ -87,5 +91,3 @@ if __name__ == '__main__':
     # Keep the main thread alive
     while True:
         time.sleep(1)
-
-
