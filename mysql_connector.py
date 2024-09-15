@@ -28,3 +28,22 @@ def write_mysql_data(query, values):
     connection.commit()
     cursor.close()
     connection.close()
+    
+    # Update data in MySQL
+def update_mysql_data(query, values):
+    connection = get_mysql_connection()
+    cursor = connection.cursor()
+    cursor.execute(query, values)
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+# Delete data in MySQL
+def delete_mysql_data(query):
+    connection = get_mysql_connection()
+    cursor = connection.cursor()
+    cursor.execute(query)
+    connection.commit()
+    cursor.close()
+    connection.close()
+
