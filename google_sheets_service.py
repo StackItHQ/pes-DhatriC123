@@ -13,7 +13,7 @@ def get_google_sheets_service():
     service = build('sheets', 'v4', credentials=credentials)
     return service
 
-# Function to read data from Google Sheets
+# Read data from Google Sheets
 def read_sheet_data(spreadsheet_id, range_name):
     service = get_google_sheets_service()
     sheet = service.spreadsheets()
@@ -21,11 +21,27 @@ def read_sheet_data(spreadsheet_id, range_name):
     rows = result.get('values', [])
     return rows
 
-# Function to write data to Google Sheets
+# Write data to Google Sheets
 def write_sheet_data(spreadsheet_id, range_name, values):
     service = get_google_sheets_service()
     body = {'values': values}
     result = service.spreadsheets().values().update(
         spreadsheetId=spreadsheet_id, range=range_name,
         valueInputOption='RAW', body=body).execute()
+    return result
+
+# Append data to Google Sheets
+def append_sheet_data(spreadsheet_id, range_name, values):
+    service = get_google_sheets_service()
+    body = {'values': values}
+    result = service.spreadsheets().values().append(
+        spreadsheetId=spreadsheet_id, range=range_name,
+        valueInputOption='RAW', body=body).execute()
+    return result
+
+# Delete rows from Google Sheets (this requires clearing a range)
+def delete_sheet_data(spreadsheet_id, range_name):
+    service = get_google_sheets_service()
+    result = service.spreadsheets().values().clear(
+        spreadsheetId=spreadsheet_id, range=range_name).execute()
     return result
