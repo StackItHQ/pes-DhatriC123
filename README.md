@@ -60,3 +60,13 @@ All the best ✨.
 
 ## Developer's Section
 *Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
+
+
+APPROACH:
+1)Used google sheets API to to read, write, and delete data in Google Sheets.
+2)MySQL connector to connect to the MySQL database to perform CRUD operations
+3)wrote 2 functions:
+Google Sheets Watcher: To check the Google Sheet for changes (e.g., additions, updates, or deletions) and update the MySQL database accordingly.
+MySQL Watcher: Continuously monitors the MySQL database and updates the Google Sheet whenever there are changes.
+The two watchers run in separate threads to allow simultaneous monitoring and updating of both Google Sheets and the MySQL database.
+BIGGEST challenge:making the project real time
