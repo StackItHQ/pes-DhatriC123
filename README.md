@@ -62,7 +62,11 @@ All the best ✨.
 *Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
 
 Link to my video:
+PART 1:Where I show changes made in the sheet refected in the database.
 https://drive.google.com/file/d/1ZPTG-wu0tUdLDdQVFOPYpXcB56PvmbDJ/view?usp=sharing
+PART 2: I forgot to show in the video how the changes made in the MySQL database is updated real time in the Google sheets, so adding part 2.
+https://drive.google.com/file/d/1EOS9_-BsmHVXbCCuqtOoAT-7UYB2EAov/view?usp=sharing
+
 
 
 APPROACH:
