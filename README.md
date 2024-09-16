@@ -48,7 +48,7 @@ We have a checklist at the bottom of this README file, which you should update a
 - [ 1] My code's working just fine! 🥳
 - [ 1] I have recorded a video showing it working and embedded it in the README ▶️
 - [ 1] I have tested all the normal working cases 😎
-- [ ] I have even solved some edge cases (brownie points) 💪
+- [ 1] I have even solved some edge cases (brownie points) 💪
 - [ 1] I added my very planned-out approach to the problem at the end of this README 📜
 
 ## Got Questions❓
