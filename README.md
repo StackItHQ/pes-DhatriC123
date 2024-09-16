@@ -72,4 +72,4 @@ APPROACH:
 Google Sheets Watcher: To check the Google Sheet for changes (e.g., additions, updates, or deletions) and update the MySQL database accordingly.
 MySQL Watcher: Continuously monitors the MySQL database and updates the Google Sheet whenever there are changes.
 The two watchers run in separate threads to allow simultaneous monitoring and updating of both Google Sheets and the MySQL database.
-BIGGEST challenge:making the project real time
+
