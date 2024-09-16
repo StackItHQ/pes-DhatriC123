@@ -62,6 +62,8 @@ All the best ✨.
 *Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
 
 
+
+
 APPROACH:
 1)Used google sheets API to to read, write, and delete data in Google Sheets.
 2)MySQL connector to connect to the MySQL database to perform CRUD operations
