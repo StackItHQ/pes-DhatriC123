@@ -4,7 +4,7 @@ import time
 from threading import Thread
 
 # Define the Google Sheets ID and range
-SPREADSHEET_ID = '1nQbDJhh8KLZbAW8iJh3zRokKrz52XJHQJ4sU-TDUMBE'  # Replace with your actual Google Sheets ID
+SPREADSHEET_ID = '1nQbDJhh8KLZbAW8iJh3zRokKrz52XJHQJ4sU-TDUMBE'  # my google sheets ID
 RANGE_NAME = 'Sheet1!A1:D'  # The range of cells to read/write data
 
 def clean_and_validate_data(row):
