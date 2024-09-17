@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/AHFn7Vbn)
 # Superjoin Hiring Assignment
 
 ### Welcome to Superjoin's hiring assignment! 🚀
@@ -44,11 +45,11 @@ Once you're done, make sure you **record a video** showing your project working.
 
 We have a checklist at the bottom of this README file, which you should update as your progress with your assignment. It will help us evaluate your project.
 
-- [ ] My code's working just fine! 🥳
-- [ ] I have recorded a video showing it working and embedded it in the README ▶️
-- [ ] I have tested all the normal working cases 😎
-- [ ] I have even solved some edge cases (brownie points) 💪
-- [ ] I added my very planned-out approach to the problem at the end of this README 📜
+- [ 1] My code's working just fine! 🥳
+- [ 1] I have recorded a video showing it working and embedded it in the README ▶️
+- [ 1] I have tested all the normal working cases 😎
+- [ 1] I have even solved some edge cases (brownie points) 💪
+- [ 1] I added my very planned-out approach to the problem at the end of this README 📜
 
 ## Got Questions❓
 Feel free to check the discussions tab, you might get some help there. Check out that tab before reaching out to us. Also, did you know, the internet is a great place to explore? 😛
@@ -59,3 +60,21 @@ All the best ✨.
 
 ## Developer's Section
 *Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
+
+Link to my video:
+PART 1:Where I show changes made in the sheet refected in the database.
+https://drive.google.com/file/d/1ZPTG-wu0tUdLDdQVFOPYpXcB56PvmbDJ/view?usp=sharing
+PART 2: I forgot to show in the video how the changes made in the MySQL database is updated real time in the Google sheets, so adding part 2.
+https://drive.google.com/file/d/1EOS9_-BsmHVXbCCuqtOoAT-7UYB2EAov/view?usp=sharing
+
+
+
+APPROACH:
+1)Used google sheets API to to read, write, and delete data in Google Sheets.
+Howrver I wanted to write code from scratch to detect changes in the sheets, withput using API/App Script.The 2 functions used I have written below.
+2)MySQL connector to connect to the MySQL database to perform CRUD operations
+3)wrote 2 functions:
+Google Sheets Watcher: To check the Google Sheet for changes (e.g., additions, updates, or deletions) and update the MySQL database accordingly.
+MySQL Watcher: Continuously monitors the MySQL database and updates the Google Sheet whenever there are changes.
+The two watchers run in separate threads to allow simultaneous monitoring and updating of both Google Sheets and the MySQL database.
+
