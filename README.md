@@ -71,6 +71,7 @@ https://drive.google.com/file/d/1EOS9_-BsmHVXbCCuqtOoAT-7UYB2EAov/view?usp=shari
 
 APPROACH:
 1)Used google sheets API to to read, write, and delete data in Google Sheets.
+Howrver I wanted to write code from scratch to detect changes in the sheets, withput using API/App Script.The 2 functions used I have written below.
 2)MySQL connector to connect to the MySQL database to perform CRUD operations
 3)wrote 2 functions:
 Google Sheets Watcher: To check the Google Sheet for changes (e.g., additions, updates, or deletions) and update the MySQL database accordingly.
